@@ -8,7 +8,6 @@ documentation = "https://docs.rs/yara-forge"
 repository = "https://github.com/username/yara-forge"
 license = "MIT"
 keywords = ["yara", "security", "malware", "detection", "rules"]
-categories = ["template engine"]
 readme = "README.md"
 
 [dependencies]
