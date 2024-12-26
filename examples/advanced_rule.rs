@@ -1,5 +1,5 @@
 /// Advanced example showing ransomware detection techniques
-/// 
+///
 /// Demonstrates more complex YARA rule features:
 /// - Multiple string patterns and wildcards
 /// - Structured conditions with logical operators
@@ -14,13 +14,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_tag("malware")
         .with_tag("ransomware")
         .with_tag("threat_hunting")
-        
         // Track rule info and severity
         .with_metadata("author", "YARA Forge")
         .with_metadata("date", "2024-12-26")
         .with_metadata("description", "Detects potential ransomware behavior patterns")
         .with_metadata("severity", "high")
-        
         // Look for typical ransomware behavior patterns
         .with_string("$encrypt_api1", "CryptoAPI")?           // Common encryption APIs
         .with_string("$encrypt_api2", "CryptEncrypt")?
@@ -28,7 +26,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_string("$file_ext", ".encrypted")?              // Modified file extension
         .with_string("$suspicious_bytes", 
             "68 ?? ?? ?? ?? E8 ?? ?? ?? ?? 83 C4 04")?  // Suspicious code pattern with wildcards
-        
         // Complex condition combining multiple indicators
         .with_condition(r#"
             // Need to see encryption API usage
