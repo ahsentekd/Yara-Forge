@@ -1,5 +1,8 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use yara_forge::{patterns::{ENCRYPTION_APIS, RANSOMWARE_EXTENSIONS}, ransomware_template, RuleBuilder};
+use yara_forge::{
+    patterns::{ENCRYPTION_APIS, RANSOMWARE_EXTENSIONS},
+    ransomware_template, RuleBuilder,
+};
 
 fn benchmark_simple_rule(c: &mut Criterion) {
     c.bench_function("simple_rule", |b| {
