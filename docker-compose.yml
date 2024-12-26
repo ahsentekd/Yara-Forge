@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  yara-forge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./rules:/app/rules
+      - ./samples:/app/samples
+    environment:
+      - RUST_LOG=info
+    user: "1000:1000"
+    security_opt:
+      - no-new-privileges:true

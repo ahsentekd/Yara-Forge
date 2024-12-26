@@ -1,0 +1,44 @@
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Generated YARA rules
+*.yar
+*.yara
+/rules/
+
+# Test files
+/samples/
+
+# Release files
+/release/
+
+# Docker
+.docker/
+
+# Environment variables
+.env
+.env.*
+
+# Debug files
+*.pdb
+*.dSYM/
+
+# Benchmark results
+/criterion/
+
+# Documentation
+/doc/
+/docs/_build/
+
+# Test coverage
+/coverage/
+*.profraw
+/tarpaulin-report.html

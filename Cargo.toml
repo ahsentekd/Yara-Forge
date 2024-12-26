@@ -1,0 +1,47 @@
+[package]
+name = "yara-forge"
+version = "0.1.0"
+edition = "2021"
+authors = ["YARA Forge Contributors"]
+description = "A powerful Rust library for crafting, validating, and managing YARA rules"
+documentation = "https://docs.rs/yara-forge"
+repository = "https://github.com/username/yara-forge"
+license = "MIT"
+keywords = ["yara", "security", "malware", "detection", "rules"]
+categories = ["development-tools", "command-line-utilities", "security"]
+readme = "README.md"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+lazy_static = "1.4"
+regex = "1.10"
+chrono = "0.4"
+uuid = { version = "1.6", features = ["v4"] }
+walkdir = "2.4"
+rayon = "1.8"
+hex = "0.4"
+base64 = "0.21"
+sha2 = "0.10"
+tempfile = "3.8"
+
+[dev-dependencies]
+criterion = "0.5"
+assert_fs = "1.0"
+predicates = "3.0"
+test-case = "3.3"
+
+[[bench]]
+name = "rule_generation"
+harness = false
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
