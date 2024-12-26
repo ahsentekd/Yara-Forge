@@ -1,5 +1,5 @@
 use std::process::exit;
-use yara_forge::{RuleBuilder, ValidationOptions};
+use yara_forge::ValidationOptions;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
