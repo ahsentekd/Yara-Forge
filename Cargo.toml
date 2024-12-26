@@ -1,6 +1,6 @@
 [package]
 name = "yara-forge"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["YARA Forge Contributors"]
 description = "A powerful Rust library for crafting, validating, and managing YARA rules"
