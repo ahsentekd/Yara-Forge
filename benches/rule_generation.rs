@@ -1,8 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use yara_rule_generator::{
-    patterns::{ENCRYPTION_APIS, RANSOMWARE_EXTENSIONS},
-    ransomware_template, RuleBuilder,
-};
+use yara_forge::{patterns::{ENCRYPTION_APIS, RANSOMWARE_EXTENSIONS}, ransomware_template, RuleBuilder};
 
 fn benchmark_simple_rule(c: &mut Criterion) {
     c.bench_function("simple_rule", |b| {
@@ -43,23 +40,22 @@ fn benchmark_complex_rule(c: &mut Criterion) {
 }
 
 fn benchmark_rule_validation(c: &mut Criterion) {
-    use yara_rule_generator::validation::{validate_rule, ValidationOptions};
-
-    let rule = RuleBuilder::new("test_rule")
-        .with_string("$test", "test pattern")
-        .unwrap()
-        .with_condition("$test")
-        .build()
-        .unwrap();
-
-    let options = ValidationOptions {
-        syntax_only: true,
-        test_against_samples: false,
-        max_file_size: 1024 * 1024,
-        timeout: 10,
-    };
-
     c.bench_function("rule_validation", |b| {
+        use yara_forge::validation::{validate_rule, ValidationOptions};
+        let rule = RuleBuilder::new("test_rule")
+            .with_string("$test", "test pattern")
+            .unwrap()
+            .with_condition("$test")
+            .build()
+            .unwrap();
+
+        let options = ValidationOptions {
+            syntax_only: true,
+            test_against_samples: false,
+            max_file_size: 1024 * 1024,
+            timeout: 10,
+        };
+
         b.iter(|| validate_rule(black_box(&rule.to_string()), black_box(&options)))
     });
 }

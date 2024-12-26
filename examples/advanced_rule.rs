@@ -40,8 +40,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "#)
         .build()?;
 
-    // Show the complete rule
-    println!("Generated YARA Rule:\n{}", rule.to_string());
+    // Print the generated rule
+    println!("Generated YARA Rule:\n{}", rule);
 
     Ok(())
 }

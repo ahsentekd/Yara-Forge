@@ -7,8 +7,8 @@
 /// - Use proper error handling patterns
 use yara_forge::{
     utils::{load_rule_from_file, save_rule_to_file},
-    validation::{validate_rule, ValidationError},
-    RuleBuilder, ValidationOptions, YaraError,
+    validation::validate_rule,
+    RuleBuilder, ValidationOptions,
 };
 
 /// Attempt to create an invalid rule

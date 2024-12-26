@@ -139,19 +139,22 @@ impl RuleBuilder {
     }
 }
 
-impl ToString for Rule {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for Rule {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut output = String::new();
 
-        // Rule header
+        // Rule name and tags
         output.push_str(&format!("rule {} {{\n", self.name));
 
-        // Tags
+        // Tags section
         if !self.tags.is_empty() {
-            output.push_str(&format!("    tags = {}\n", self.tags.join(" ")));
+            output.push_str("    tags:\n");
+            for tag in &self.tags {
+                output.push_str(&format!("        {}\n", tag));
+            }
         }
 
-        // Metadata
+        // Metadata section
         if !self.metadata.is_empty() {
             output.push_str("    metadata:\n");
             for (key, value) in &self.metadata {
@@ -159,35 +162,35 @@ impl ToString for Rule {
             }
         }
 
-        // Strings
+        // Strings section
         if !self.strings.is_empty() {
             output.push_str("    strings:\n");
             for string in &self.strings {
-                let pattern = if string.is_hex {
-                    format!("{{ {} }}", string.pattern)
-                } else {
-                    format!("\"{}\"", string.pattern)
-                };
+                let mut modifiers = String::new();
+                if !string.modifiers.is_empty() {
+                    modifiers = format!(" {}", string.modifiers.join(" "));
+                }
 
-                let modifiers = if string.modifiers.is_empty() {
-                    String::new()
+                if string.is_hex {
+                    output.push_str(&format!(
+                        "        {} = {{ {} }}{}\n",
+                        string.identifier, string.pattern, modifiers
+                    ));
                 } else {
-                    format!(" {}", string.modifiers.join(" "))
-                };
-
-                output.push_str(&format!(
-                    "        {} = {}{}\n",
-                    string.identifier, pattern, modifiers
-                ));
+                    output.push_str(&format!(
+                        "        {} = \"{}\"{}\n",
+                        string.identifier, string.pattern, modifiers
+                    ));
+                }
             }
         }
 
-        // Condition
+        // Condition section
         output.push_str("    condition:\n");
         output.push_str(&format!("        {}\n", self.condition));
-        output.push_str("}\n");
+        output.push('}');
 
-        output
+        write!(f, "{}", output)
     }
 }
 
@@ -198,6 +201,19 @@ fn is_valid_identifier(s: &str) -> bool {
     }
     RE.is_match(s)
 }
+
+// Re-export commonly used items
+pub use patterns::{
+    C2_PATTERNS, ENCRYPTION_APIS, FILE_HEADERS, OBFUSCATION_PATTERNS, RANSOMWARE_EXTENSIONS,
+};
+pub use templates::{
+    backdoor_template, cryptominer_template, filetype_template, malware_template,
+    ransomware_template,
+};
+pub use utils::{
+    export_rule_to_json, import_rule_from_json, load_rule_from_file, save_rule_to_file,
+};
+pub use validation::{scan_with_rule, validate_against_samples, validate_rule, ValidationOptions};
 
 #[cfg(test)]
 mod tests {
@@ -241,22 +257,9 @@ mod tests {
             .build()
             .unwrap();
 
-        let rule_str = rule.to_string();
+        let rule_str = format!("{}", rule);
         assert!(rule_str.contains("rule test_rule"));
-        assert!(rule_str.contains("tags = malware"));
+        assert!(rule_str.contains("tags:\n        malware"));
         assert!(rule_str.contains("author = \"Test Author\""));
     }
 }
-
-// Re-export commonly used items
-pub use patterns::{
-    C2_PATTERNS, ENCRYPTION_APIS, FILE_HEADERS, OBFUSCATION_PATTERNS, RANSOMWARE_EXTENSIONS,
-};
-pub use templates::{
-    backdoor_template, cryptominer_template, filetype_template, malware_template,
-    ransomware_template,
-};
-pub use utils::{
-    export_rule_to_json, import_rule_from_json, load_rule_from_file, save_rule_to_file,
-};
-pub use validation::{scan_with_rule, validate_against_samples, validate_rule, ValidationOptions};

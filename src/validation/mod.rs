@@ -80,7 +80,7 @@ pub fn validate_against_samples(
         .arg(temp_rule.path())
         .arg("compiled_rule")
         .status()
-        .map_err(|e| ValidationError::IoError(e))?;
+        .map_err(ValidationError::IoError)?;
 
     if !status.success() {
         return Err(ValidationError::CompilationError(

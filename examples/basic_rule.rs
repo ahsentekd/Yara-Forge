@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_condition("$pattern")
         .build()?;
 
-    // Validate the rule
+    // Print the rule
     println!("Rule content:\n{}", rule);
     println!("\nValidating rule...");
     match validate_rule(&rule.to_string(), &ValidationOptions::default()) {
